@@ -1,0 +1,87 @@
+#Desmond Ho
+#Feb 22 2022
+
+#Question 1
+#a
+
+p <- 0.025
+n <-400
+q <- 1- p
+
+vals <- 0:n
+
+x.vals <- dbinom(vals, n, p)
+
+plot(vals, x.vals, type='h', xlim = c(0, 25), col="blue", lwd=2,)
+
+plot(vals/n, x.vals*n, type='h', xlim = c(0, 0.08), 
+     xlab="P-hat (sample proportion of Tech support)"
+     , ylab="probability Density",
+     main="Sampling Dist of P-hat, n=400",
+     col="blue", lwd=2,)
+
+
+
+
+mu.vals <- p
+sig.vals <- sqrt(n*p*q)/n
+x.vals.norm <- seq(-0.1, 0.07, 0.001)
+vals.norm <- dnorm(x.vals.norm, mu.vals, sig.vals)
+
+
+lines(x.vals.norm, vals.norm, col="green", lwd=3)
+
+#1b
+
+pbinom(12, n, p)- pbinom(7, n, p)
+
+#1c
+pnorm(12/n, mu.vals, sig.vals) - pnorm(8/n, mu.vals, sig.vals)
+
+pnorm(12.5/n, mu.vals, sig.vals) - pnorm(7.5/n, mu.vals, sig.vals)
+
+#question 2
+
+hist(fails$X.fail, freq=FALSE, breaks = seq(-0.5, 10.5, 1), 
+     xaxp=c(-1, 10, 11), main="hard drive failures", 
+     ylab="density of failures", xlab="failures")
+
+mu.fail <- mean(fails$X.fail)
+mu.fail 
+std.fail <- sd(fails$X.fail)
+std.fail
+
+norm.fails <- seq(0, 10, 1)
+xbar <- dpois(norm.fails, mu.fail)
+
+lines(norm.fails, xbar, type='p', pch='x', col='red')
+
+
+#question 3
+
+n.sims <- 10^5
+
+n.size <- 50
+
+
+mean <- c()
+for (i in 1:n.sims){
+  mean[i] <- mean(sample(fails$X.fail,n.size))
+}
+
+#c
+
+hist(mean, breaks = seq(0.5, 2.5, 0.1), freq = FALSE, 
+     main = "10^5 samples of failures, n=50",xlab = "mean of sample" )
+
+
+mu <- mean(mean)
+sdev <- sd(mean)
+
+mean.norm <- seq(0,3.0,0.02)
+lines(mean.norm, dnorm(mean.norm, mu, sdev), type="l", col="red", lwd=2)
+
+
+#d
+
+qnorm(.95, mu, sdev)
